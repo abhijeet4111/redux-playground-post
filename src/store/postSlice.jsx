@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+
+let intexOfEditPost = 0;
+
 const postSlice = createSlice({
   name: "posts",
   initialState: {
@@ -37,16 +41,37 @@ const postSlice = createSlice({
     },
     editPost: (state, action) => {
       const editPostInfo = action.payload;
-
-      const editPostIndex = state.postArr.findIndex(
+      const postIndex = state.postArr.findIndex(
         (data) => data.postId === editPostInfo.postId
       );
-      //   console.log("editPostInfo.caption", editPostInfo.caption);
-      //   console.log(state.postArr[editPostIndex].caption);
-      //   state.postArr[editPostIndex].caption =
-      //     editPostInfo[editPostIndex].caption;
+      intexOfEditPost = postIndex;
+    },
+    editPostInput: (state, action) => {
+      let newCaption = action.payload;
+      state.postArr[intexOfEditPost].caption = newCaption;
+    },
+    getInitialData: (state, action) => {
+      let newArr = action.payload;
+      state.postArr = newArr;
     },
   },
 });
-export const { addLikes, addPost, deletePost, editPost } = postSlice.actions;
+export const {
+  addLikes,
+  addPost,
+  deletePost,
+  editPost,
+  editPostInput,
+  getInitialData,
+} = postSlice.actions;
 export default postSlice.reducer;
+// {
+//     postId: uuidv4(),
+//     caption: "learning redux 1",
+//     likes: 22,
+//   },
+//   {
+//     postId: uuidv4(),
+//     caption: "learning redux 2",
+//     likes: 24,
+//   },

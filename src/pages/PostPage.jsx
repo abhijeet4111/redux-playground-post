@@ -1,17 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PostCard } from "../components/PostCard";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { addPost, editPost } from "../store/postSlice";
+import {
+  addPost,
+  editPost,
+  editPostInput,
+  getInitialData,
+} from "../store/postSlice";
+
 const PostPage = () => {
   const postCard = useSelector((data) => data.posts.postArr);
   const [updateBtn, setUpdateBtn] = useState(true);
-
   const [inputChange, setInputChange] = useState();
+  const [newPostCard, setNewPostCard] = useState(postCard);
+
   const disPatch = useDispatch();
 
   const addPostHandler = () => {
-    console.log("clicked");
     let newPost = {
       caption: inputChange,
       likes: 0,
@@ -20,10 +26,8 @@ const PostPage = () => {
     disPatch(addPost(newPost));
   };
   const updatePostHandler = () => {
-    setInputChange(inputChange);
-    disPatch(editPost(postCard));
+    disPatch(editPostInput(inputChange));
   };
-  console.log(postCard);
 
   return (
     <div className="pageLayout">
